@@ -8,5 +8,9 @@ class IconPath {
   static const String logo = 'assets/icons/logo.png';
   static const String google = 'assets/icons/google.png';
   static const String upload = 'assets/icons/upload.png';
+  static const String dial = 'assets/icons/dial.png';
+  static const String phone = 'assets/icons/phone.png';
+  static const String contact = 'assets/icons/contact.png';
+  static const String message = 'assets/icons/message.png';
   
 }

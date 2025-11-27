@@ -48,19 +48,19 @@ class CustomSearchBar extends StatelessWidget {
             onSubmitted: onSubmitted,
             style: TextStyle(
               fontFamily: 'Satoshi',
-              color: const Color(0xFF0A0A0A),
+              color: AppColors.whiteColor,
               fontSize: fontSize ?? 14.sp,
             ),
-            cursorColor: Colors.black,
+            cursorColor: AppColors.whiteColor,
             cursorHeight: 18,
             decoration: InputDecoration(
               hintText: hintText,
               filled: true,
-              fillColor: fillColor ?? Colors.white,
+              fillColor: fillColor ?? AppColors.fadeBlackColor.withOpacity(0.15),
               hintStyle: TextStyle(
-                fontFamily: 'Satoshi',
+                fontFamily: 'Roboto',
                 color: const Color(0xFF919EAB),
-                fontSize: fontSize ?? 14.sp,
+                fontSize: fontSize ?? 12.sp,
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
               prefixIcon: prefixIcon != null

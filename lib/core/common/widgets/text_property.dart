@@ -9,6 +9,7 @@ class TextProperty extends StatelessWidget {
   final Color textColor;
   final double fontSize;
   final FontWeight fontWeight;
+  final double? letterSpacing;
 
   const TextProperty({
     this.softWrap,
@@ -20,6 +21,7 @@ class TextProperty extends StatelessWidget {
     required this.textColor,
     required this.fontSize,
     required this.fontWeight,
+    this.letterSpacing,
   });
 
   @override
@@ -35,6 +37,7 @@ class TextProperty extends StatelessWidget {
         color: textColor,
         fontSize: fontSize,
         fontWeight: fontWeight,
+        letterSpacing: letterSpacing,
       ),
     );
   }

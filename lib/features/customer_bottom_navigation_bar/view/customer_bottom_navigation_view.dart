@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:ryanlord/core/utils/constants/colors.dart';
 import 'package:ryanlord/core/utils/constants/icon_path.dart';
 import 'package:ryanlord/features/customer_bottom_navigation_bar/controller/bottom_navigation_bar_controller.dart';
+import 'package:ryanlord/features/history_view/dial_views/view/dialpad_view.dart';
+import 'package:ryanlord/features/history_view/phone_view/view/call_logs_view.dart';
 
 
 class CustomerBottomNavigationView extends StatelessWidget {
@@ -14,10 +16,10 @@ class CustomerBottomNavigationView extends StatelessWidget {
   );
 
   final List<Widget> pages = [
-    // HomeView(),
-    Center(child: Text('Order Screen')),
+    DialpadView(),
+    CallLogsView(),
     Center(child: Text('Message Screen')),
-    Center(child: Text('Profile Screen')),
+    Center(child: Text('Contact Screen')),
   ];
   CustomerBottomNavigationView({super.key});
   @override
@@ -28,11 +30,11 @@ class CustomerBottomNavigationView extends StatelessWidget {
         () => Container(
           padding: EdgeInsets.only(top: 0.h, bottom: 30.h),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.r), 
-              topRight: Radius.circular(30.r),
-            ),
+            color: AppColors.bottomNavBackColor,
+            // borderRadius: BorderRadius.only(
+            //   topLeft: Radius.circular(30.r), 
+            //   topRight: Radius.circular(30.r),
+            // ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.22),
@@ -45,14 +47,14 @@ class CustomerBottomNavigationView extends StatelessWidget {
           child: Row(
             children: List.generate(4, (index) {
               final List<String> icons = [
-                // IconPath.homeDash,
-                // IconPath.order,
-                // IconPath.message,
-                // IconPath.profile,
+                IconPath.dial,
+                IconPath.phone,
+                IconPath.message,
+                IconPath.contact,
               ];
               final List<String> labels = [
                 'Home',
-                'Order',
+                'Phone',
                 'Message',
                 'Profile',
               ];
@@ -64,22 +66,22 @@ class CustomerBottomNavigationView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 30.w,
-                        height: 7.h,
-                        decoration: BoxDecoration(
-                    color: controller.selectedIndex.value == index
-                        ? AppColors.primaryGreenColor
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r), bottomRight: Radius.circular(10.r)),
-                  ),
-                      ),
+                  //     Container(
+                  //       width: 30.w,
+                  //       height: 7.h,
+                  //       decoration: BoxDecoration(
+                  //   color: controller.selectedIndex.value == index
+                  //       ? AppColors.blueText
+                  //       : Colors.transparent,
+                  //   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r), bottomRight: Radius.circular(10.r)),
+                  // ),
+                  //     ),
                       SizedBox(height: 8.h,),
                       ColorFiltered(
                         colorFilter: ColorFilter.mode(
                           controller.selectedIndex.value == index
-                              ? AppColors.primaryGreenColor
-                              : AppColors.whiteColor.withOpacity( 0.6),
+                              ? AppColors.blueText
+                              : AppColors.whiteColor,
                           BlendMode.srcIn,
                         ),
                         child: Image.asset(
@@ -104,8 +106,8 @@ class CustomerBottomNavigationView extends StatelessWidget {
                                 ? FontWeight.w500
                                 : FontWeight.w500,
                             color: controller.selectedIndex.value == index
-                                ? AppColors.primaryGreenColor
-                                : AppColors.whiteColor.withOpacity( 0.6),
+                                ? AppColors.blueText
+                                : AppColors.whiteColor,
                           ),
                         ),
                       ),
