@@ -25,12 +25,33 @@ class OngoingCallView extends StatelessWidget {
                 children: [
                   SizedBox(height: 30.h),
                   
-                  // Call duration
-                  Obx(() => TextProperty(
-                    text: controller.callDuration.value,
-                    textColor: AppColors.whiteColor,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+                  // Call status or duration with icon
+                  Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (!controller.isCallActive.value)
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: SizedBox(
+                            width: 12.w,
+                            height: 12.w,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColors.whiteColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      TextProperty(
+                        text: controller.isCallActive.value 
+                            ? controller.callDuration.value 
+                            : 'Calling...',
+                        textColor: AppColors.whiteColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
                   )),
                   
                   SizedBox(height: 20.h),

@@ -26,13 +26,16 @@ class CallController extends GetxController {
     callerName.value = name;
     callerNumber.value = number;
     callerImage.value = image ?? '';
-    isCallActive.value = true;
-    _startCallTimer();
-    Get.toNamed(AppRoute.ongoingCallView);
+    isCallActive.value = false;
+    
+    if (Get.currentRoute != AppRoute.ongoingCallView) {
+      Get.toNamed(AppRoute.ongoingCallView);
+    }
   }
 
-  void _startCallTimer() {
+  void startCallTimer() {
     _seconds = 0;
+    _callTimer?.cancel();
     _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _seconds++;
       final hours = (_seconds ~/ 3600).toString().padLeft(2, '0');
@@ -44,11 +47,24 @@ class CallController extends GetxController {
 
   void endCall() async {
     _callTimer?.cancel();
+    final wasActive = isCallActive.value;
     isCallActive.value = false;
     _seconds = 0;
     callDuration.value = '00:00:00';
+    isMuted.value = false;
+    isSpeakerOn.value = false;
+    
     await CallService.endCall();
-    Get.back();
+    
+    // Only navigate back if we're on a call screen
+    if (Get.currentRoute == AppRoute.ongoingCallView || 
+        Get.currentRoute == AppRoute.incomingCallView) {
+      // Small delay to show any disconnect messages
+      if (wasActive) {
+        await Future.delayed(Duration(milliseconds: 500));
+      }
+      Get.back();
+    }
   }
 
   void toggleMute() async {
@@ -62,10 +78,12 @@ class CallController extends GetxController {
   }
 
   void answerCall() async {
-    isCallActive.value = true;
-    _startCallTimer();
     await CallService.answerCall();
-    Get.offNamed(AppRoute.ongoingCallView);
+    // Don't start timer here, wait for ACTIVE state
+    // Navigate to ongoing call screen
+    if (Get.currentRoute != AppRoute.ongoingCallView) {
+      Get.offNamed(AppRoute.ongoingCallView);
+    }
   }
 
   void declineCall() async {

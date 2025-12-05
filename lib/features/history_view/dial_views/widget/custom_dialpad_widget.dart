@@ -139,7 +139,7 @@ class CustomDialpadWidget extends StatelessWidget {
               ),
               SizedBox(height: 14.h),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: () => c.makeCall(),
@@ -161,8 +161,6 @@ class CustomDialpadWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 50.w),
-                  SizedBox(width: 50.w),
                 ],
               ),
             ],

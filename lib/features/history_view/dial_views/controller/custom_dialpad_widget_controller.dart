@@ -35,11 +35,11 @@ class CustomDialpadWidgetController extends GetxController {
       return;
     }
 
-    // Show custom ongoing call screen first
+    // Initialize call controller and navigate to call screen immediately
     final callController = Get.put(CallController());
-    callController.startCall('Unknown Caller', phoneNumber.value);
+    callController.startCall('Calling...', phoneNumber.value);
     
-    // Then make actual call in background
-    await CallService.makeCallInBackground(phoneNumber.value);
+    // Then make the native call (will show SIM selection if needed)
+    await CallService.makeCall(phoneNumber.value);
   }
 }

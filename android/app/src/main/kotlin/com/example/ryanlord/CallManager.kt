@@ -3,6 +3,7 @@ package com.example.ryanlord
 import android.content.Context
 import android.media.AudioManager
 import android.telecom.Call
+import android.telecom.DisconnectCause
 import android.telecom.VideoProfile
 import io.flutter.plugin.common.MethodChannel
 
@@ -17,21 +18,65 @@ class CallManager(private val context: Context, private val channel: MethodChann
                 Call.STATE_NEW -> "NEW"
                 Call.STATE_RINGING -> "RINGING"
                 Call.STATE_DIALING -> "DIALING"
-                Call.STATE_ACTIVE -> "OFFHOOK"
+                Call.STATE_ACTIVE -> "ACTIVE"
                 Call.STATE_HOLDING -> "HOLDING"
-                Call.STATE_DISCONNECTED -> "IDLE"
+                Call.STATE_DISCONNECTED -> "DISCONNECTED"
                 else -> "UNKNOWN"
             }
             
             val phoneNumber = call.details?.handle?.schemeSpecificPart ?: ""
+            val isIncoming = call.details?.callDirection == Call.Details.DIRECTION_INCOMING
+            
+            // Get disconnect cause if call is disconnected
+            var disconnectReason: String? = null
+            var disconnectMessage: String? = null
+            if (state == Call.STATE_DISCONNECTED) {
+                val disconnectCause = call.details?.disconnectCause
+                disconnectReason = getDisconnectReasonString(disconnectCause?.code)
+                disconnectMessage = disconnectCause?.description?.toString()
+            }
+            
             channel.invokeMethod("onCallStateChanged", mapOf(
                 "state" to stateString,
-                "phoneNumber" to phoneNumber
+                "phoneNumber" to phoneNumber,
+                "isIncoming" to isIncoming,
+                "disconnectReason" to disconnectReason,
+                "disconnectMessage" to disconnectMessage
             ))
 
             if (state == Call.STATE_DISCONNECTED) {
+                currentCall?.unregisterCallback(callback)
                 currentCall = null
             }
+        }
+        
+        override fun onDetailsChanged(call: Call, details: Call.Details) {
+            super.onDetailsChanged(call, details)
+            // Notify about call details changes
+            val phoneNumber = details.handle?.schemeSpecificPart ?: ""
+            val callerName = details.callerDisplayName?.toString() ?: ""
+            
+            channel.invokeMethod("onCallDetailsChanged", mapOf(
+                "phoneNumber" to phoneNumber,
+                "callerName" to callerName
+            ))
+        }
+    }
+
+    private fun getDisconnectReasonString(code: Int?): String {
+        return when (code) {
+            DisconnectCause.BUSY -> "BUSY"
+            DisconnectCause.CANCELED -> "CANCELED"
+            DisconnectCause.ERROR -> "ERROR"
+            DisconnectCause.LOCAL -> "LOCAL"
+            DisconnectCause.REMOTE -> "REMOTE"
+            DisconnectCause.REJECTED -> "REJECTED"
+            DisconnectCause.RESTRICTED -> "RESTRICTED"
+            DisconnectCause.MISSED -> "MISSED"
+            DisconnectCause.CONNECTION_MANAGER_NOT_SUPPORTED -> "NOT_SUPPORTED"
+            DisconnectCause.CALL_PULLED -> "CALL_PULLED"
+            DisconnectCause.ANSWERED_ELSEWHERE -> "ANSWERED_ELSEWHERE"
+            else -> "UNKNOWN"
         }
     }
 
@@ -39,6 +84,26 @@ class CallManager(private val context: Context, private val channel: MethodChann
         currentCall?.unregisterCallback(callback)
         currentCall = call
         currentCall?.registerCallback(callback)
+        
+        // Immediately notify about the call
+        val state = call.state
+        val stateString = when (state) {
+            Call.STATE_RINGING -> "RINGING"
+            Call.STATE_DIALING -> "DIALING"
+            Call.STATE_ACTIVE -> "ACTIVE"
+            else -> "NEW"
+        }
+        
+        val phoneNumber = call.details?.handle?.schemeSpecificPart ?: ""
+        val isIncoming = call.details?.callDirection == Call.Details.DIRECTION_INCOMING
+        
+        channel.invokeMethod("onCallStateChanged", mapOf(
+            "state" to stateString,
+            "phoneNumber" to phoneNumber,
+            "isIncoming" to isIncoming,
+            "disconnectReason" to null,
+            "disconnectMessage" to null
+        ))
     }
 
     fun answerCall() {
