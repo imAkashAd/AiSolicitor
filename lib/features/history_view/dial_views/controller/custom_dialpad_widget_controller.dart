@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ryanlord/features/call_view/controller/call_controller.dart';
 import 'package:ryanlord/core/utils/constants/colors.dart';
+import 'package:ryanlord/features/call_view/controller/call_controller.dart';
+import 'package:ryanlord/services/call_services.dart';
 
 class CustomDialpadWidgetController extends GetxController {
   RxString phoneNumber = "".obs;
@@ -14,8 +15,7 @@ class CustomDialpadWidgetController extends GetxController {
 
   void deleteDigit() {
     if (phoneNumber.isNotEmpty) {
-      phoneNumber.value =
-          phoneNumber.value.substring(0, phoneNumber.value.length - 1);
+      phoneNumber.value = phoneNumber.value.substring(0, phoneNumber.value.length - 1);
     }
   }
 
@@ -23,7 +23,7 @@ class CustomDialpadWidgetController extends GetxController {
     phoneNumber.value = "";
   }
 
-  void makeCall() {
+  void makeCall() async {
     if (phoneNumber.value.isEmpty) {
       Get.snackbar(
         'Error',
@@ -35,8 +35,11 @@ class CustomDialpadWidgetController extends GetxController {
       return;
     }
 
-    // Initialize CallController and start custom call screen
+    // Show custom ongoing call screen first
     final callController = Get.put(CallController());
     callController.startCall('Unknown Caller', phoneNumber.value);
+    
+    // Then make actual call in background
+    await CallService.makeCallInBackground(phoneNumber.value);
   }
 }

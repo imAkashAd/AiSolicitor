@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ryanlord/routes/app_routes.dart';
+import 'package:ryanlord/services/call_services.dart';
 
 class CallController extends GetxController {
   final RxString callerName = ''.obs;
@@ -40,29 +42,34 @@ class CallController extends GetxController {
     });
   }
 
-  void endCall() {
+  void endCall() async {
     _callTimer?.cancel();
     isCallActive.value = false;
     _seconds = 0;
     callDuration.value = '00:00:00';
+    await CallService.endCall();
     Get.back();
   }
 
-  void toggleMute() {
+  void toggleMute() async {
     isMuted.value = !isMuted.value;
+    await CallService.toggleMute(isMuted.value);
   }
 
-  void toggleSpeaker() {
+  void toggleSpeaker() async {
     isSpeakerOn.value = !isSpeakerOn.value;
+    await CallService.toggleSpeaker(isSpeakerOn.value);
   }
 
-  void answerCall() {
+  void answerCall() async {
     isCallActive.value = true;
     _startCallTimer();
+    await CallService.answerCall();
     Get.offNamed(AppRoute.ongoingCallView);
   }
 
-  void declineCall() {
+  void declineCall() async {
+    await CallService.endCall();
     Get.back();
   }
 }

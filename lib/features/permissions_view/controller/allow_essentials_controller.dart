@@ -97,32 +97,16 @@ class AllowEssentialsController extends GetxController {
 
   void skipCurrentPermission() {
     if (permissions[currentStep.value].permission == null) {
-      // On intro screen, just move to next permission
-      Get.snackbar(
-        backgroundColor: AppColors.fadeRedColor,
-        'Skipped',
-        'Moving to permissions...',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      
       nextStep();
     } else {
-      Get.snackbar(
-        backgroundColor: AppColors.fadeRedColor,
-        'Skipped',
-        '${permissions[currentStep.value].title} permission skipped',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      
       nextStep();
     }
   }
 
   void skipAllPermissions() {
-    Get.snackbar(
-      backgroundColor: AppColors.fadeRedColor,
-      'Skipped',
-      'All permissions skipped',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    
     navigateToHome();
   }
 
@@ -135,12 +119,7 @@ class AllowEssentialsController extends GetxController {
   }
 
   void navigateToHome() {
-    Get.snackbar(
-      backgroundColor: AppColors.fadeRedColor,
-      'Complete',
-      'All permissions handled. Navigating to home...',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    
     Get.offAllNamed(AppRoute.customerBottomNavigationView);
   }
 }
