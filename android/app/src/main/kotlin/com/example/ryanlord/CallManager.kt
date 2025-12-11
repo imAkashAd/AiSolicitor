@@ -8,12 +8,16 @@ import android.telecom.VideoProfile
 import io.flutter.plugin.common.MethodChannel
 
 class CallManager(private val context: Context, private val channel: MethodChannel) {
-    private var currentCall: Call? = null
-    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-    private val callback = object : Call.Callback() {
+    private var currentCall: Call? = null
+    private val audioManager: AudioManager =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+    private val callback: Call.Callback = object : Call.Callback() {
+
         override fun onStateChanged(call: Call, state: Int) {
             super.onStateChanged(call, state)
+
             val stateString = when (state) {
                 Call.STATE_NEW -> "NEW"
                 Call.STATE_RINGING -> "RINGING"
@@ -23,19 +27,20 @@ class CallManager(private val context: Context, private val channel: MethodChann
                 Call.STATE_DISCONNECTED -> "DISCONNECTED"
                 else -> "UNKNOWN"
             }
-            
+
             val phoneNumber = call.details?.handle?.schemeSpecificPart ?: ""
-            val isIncoming = call.details?.callDirection == Call.Details.DIRECTION_INCOMING
-            
-            // Get disconnect cause if call is disconnected
+            val isIncoming = call.details?.callDirection ==
+                    Call.Details.DIRECTION_INCOMING
+
             var disconnectReason: String? = null
             var disconnectMessage: String? = null
+
             if (state == Call.STATE_DISCONNECTED) {
-                val disconnectCause = call.details?.disconnectCause
-                disconnectReason = getDisconnectReasonString(disconnectCause?.code)
-                disconnectMessage = disconnectCause?.description?.toString()
+                val cause = call.details?.disconnectCause
+                disconnectReason = getDisconnectReasonString(cause?.code)
+                disconnectMessage = cause?.description?.toString()
             }
-            
+
             channel.invokeMethod("onCallStateChanged", mapOf(
                 "state" to stateString,
                 "phoneNumber" to phoneNumber,
@@ -49,19 +54,21 @@ class CallManager(private val context: Context, private val channel: MethodChann
                 currentCall = null
             }
         }
-        
+
+
         override fun onDetailsChanged(call: Call, details: Call.Details) {
             super.onDetailsChanged(call, details)
-            // Notify about call details changes
+
             val phoneNumber = details.handle?.schemeSpecificPart ?: ""
             val callerName = details.callerDisplayName?.toString() ?: ""
-            
+
             channel.invokeMethod("onCallDetailsChanged", mapOf(
                 "phoneNumber" to phoneNumber,
                 "callerName" to callerName
             ))
         }
     }
+
 
     private fun getDisconnectReasonString(code: Int?): String {
         return when (code) {
@@ -80,23 +87,23 @@ class CallManager(private val context: Context, private val channel: MethodChann
         }
     }
 
+
     fun setCall(call: Call) {
         currentCall?.unregisterCallback(callback)
         currentCall = call
         currentCall?.registerCallback(callback)
-        
-        // Immediately notify about the call
-        val state = call.state
-        val stateString = when (state) {
+
+        val stateString = when (call.state) {
             Call.STATE_RINGING -> "RINGING"
             Call.STATE_DIALING -> "DIALING"
             Call.STATE_ACTIVE -> "ACTIVE"
             else -> "NEW"
         }
-        
+
         val phoneNumber = call.details?.handle?.schemeSpecificPart ?: ""
-        val isIncoming = call.details?.callDirection == Call.Details.DIRECTION_INCOMING
-        
+        val isIncoming = call.details?.callDirection ==
+                Call.Details.DIRECTION_INCOMING
+
         channel.invokeMethod("onCallStateChanged", mapOf(
             "state" to stateString,
             "phoneNumber" to phoneNumber,
@@ -105,6 +112,7 @@ class CallManager(private val context: Context, private val channel: MethodChann
             "disconnectMessage" to null
         ))
     }
+
 
     fun answerCall() {
         currentCall?.answer(VideoProfile.STATE_AUDIO_ONLY)

@@ -1,68 +1,114 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ryanlord">
+
+    ---------- PERMISSIONS ----------
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <!-- Storage (older Android) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- Android 13+ media permissions -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- CALL permissions -->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+
+    <!-- Needed for answering calls -->
     <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
+
+    <!-- Needed for InCallService (must be default phone app) -->
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
-    
+
+
+    ---------- QUERIES (package visibility) ----------
     <queries>
+        <!-- Needed to open dialer / tel: links -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="tel" />
         </intent>
+
+        <!-- Used by Flutter text actions -->
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+
+        <!-- Allow visibility into call state -->
+        <intent>
+            <action android:name="android.intent.action.PHONE_STATE"/>
+        </intent>
     </queries>
 
+
+    ---------- APPLICATION ----------
     <application
-        android:label="Ai Solicitor"
         android:name="${applicationName}"
+        android:label="Ai Solicitor"
         android:icon="@mipmap/ic_launcher">
-        
+
+        ---------- MAIN ACTIVITY ----------
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
-            
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="
+                orientation|
+                keyboardHidden|
+                keyboard|
+                screenSize|
+                smallestScreenSize|
+                locale|
+                layoutDirection|
+                fontScale|
+                screenLayout|
+                density|
+                uiMode">
+
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
-            
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        
+
+
+        ---------- INCALL SERVICE (your custom class) ----------
         <service
             android:name=".CallService"
             android:permission="android.permission.BIND_INCALL_SERVICE"
             android:exported="true">
+
+            ----------This tells Android your service provides a call UI----------
             <meta-data
                 android:name="android.telecom.IN_CALL_SERVICE_UI"
                 android:value="true" />
+
             <intent-filter>
                 <action android:name="android.telecom.InCallService"/>
             </intent-filter>
         </service>
-        
+
+
+        Flutter plugin loader
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
     </application>
+
 </manifest>

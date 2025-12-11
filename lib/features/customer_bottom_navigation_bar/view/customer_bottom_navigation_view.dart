@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 import 'package:ryanlord/core/utils/constants/colors.dart';
 import 'package:ryanlord/core/utils/constants/icon_path.dart';
 import 'package:ryanlord/features/customer_bottom_navigation_bar/controller/bottom_navigation_bar_controller.dart';
-import 'package:ryanlord/features/history_view/dial_views/view/dialpad_view.dart';
-import 'package:ryanlord/features/history_view/phone_view/view/call_logs_view.dart';
+import 'package:ryanlord/features/tab_views/dial_views/view/dialpad_view.dart';
+import 'package:ryanlord/features/tab_views/message_view/view/message_view.dart';
+import 'package:ryanlord/features/tab_views/phone_view/view/call_logs_view.dart';
+import 'package:ryanlord/features/tab_views/profile_view/view/profile_view.dart';
 
 
 class CustomerBottomNavigationView extends StatelessWidget {
@@ -18,8 +20,8 @@ class CustomerBottomNavigationView extends StatelessWidget {
   final List<Widget> pages = [
     DialpadView(),
     CallLogsView(),
-    Center(child: Text('Message Screen')),
-    Center(child: Text('Contact Screen')),
+    MessageView(),
+    ProfileView(),
   ];
   CustomerBottomNavigationView({super.key});
   @override

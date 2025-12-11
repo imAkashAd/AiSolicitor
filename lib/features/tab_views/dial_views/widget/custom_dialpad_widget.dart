@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ryanlord/core/common/widgets/text_property.dart';
 import 'package:ryanlord/core/utils/constants/colors.dart';
 import 'package:ryanlord/core/utils/constants/icon_path.dart';
-import 'package:ryanlord/features/history_view/dial_views/controller/custom_dialpad_widget_controller.dart';
+import 'package:ryanlord/features/tab_views/dial_views/controller/custom_dialpad_widget_controller.dart';
 
 class CustomDialpadWidget extends StatelessWidget {
   CustomDialpadWidget({super.key});

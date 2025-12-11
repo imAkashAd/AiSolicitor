@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ryanlord/core/utils/constants/colors.dart';
-import 'package:ryanlord/features/history_view/dial_views/widget/custom_dialpad_widget.dart';
+import 'package:ryanlord/features/tab_views/dial_views/widget/custom_dialpad_widget.dart';
 
 class DialpadView extends StatelessWidget {
   const DialpadView({super.key});
