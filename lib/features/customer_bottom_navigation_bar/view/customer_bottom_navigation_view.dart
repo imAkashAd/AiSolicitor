@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:ryanlord/core/utils/constants/colors.dart';
 import 'package:ryanlord/core/utils/constants/icon_path.dart';
 import 'package:ryanlord/features/customer_bottom_navigation_bar/controller/bottom_navigation_bar_controller.dart';
+import 'package:ryanlord/features/tab_views/contact_view/view/contact_view.dart';
 import 'package:ryanlord/features/tab_views/dial_views/view/dialpad_view.dart';
 import 'package:ryanlord/features/tab_views/message_view/view/message_view.dart';
 import 'package:ryanlord/features/tab_views/phone_view/view/call_logs_view.dart';
@@ -21,7 +22,7 @@ class CustomerBottomNavigationView extends StatelessWidget {
     DialpadView(),
     CallLogsView(),
     MessageView(),
-    ProfileView(),
+    ContactView(),
   ];
   CustomerBottomNavigationView({super.key});
   @override
@@ -55,13 +56,13 @@ class CustomerBottomNavigationView extends StatelessWidget {
                 IconPath.contact,
               ];
               final List<String> labels = [
-                'Home',
+                'Keyboard',
                 'Phone',
                 'Message',
-                'Profile',
+                'Contact',
               ];
 
-              return Expanded(
+              return Expanded(                                                      
                 child: GestureDetector(
                   onTap: () => controller.changeTabIndex(index),
                   child: Column(

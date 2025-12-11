@@ -113,7 +113,7 @@ class CustomTextfield extends StatelessWidget {
               fontFamily: 'Satoshi',
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
-              color: AppColors.hintTextColor,
+              color: AppColors.hintTextColor.withOpacity(0.6),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.r),

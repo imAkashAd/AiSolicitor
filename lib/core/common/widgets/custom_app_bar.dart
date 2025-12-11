@@ -114,7 +114,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             )
           else if (homePage == false)
             GestureDetector(
-              onTap: () {},
+              onTap: onEditTap,
               child: Image.asset(
                 callStatus!,
               ),

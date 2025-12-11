@@ -30,5 +30,16 @@ class IconPath {
   static const String femaleAvatar = 'assets/icons/femaleAvatar.png';
   static const String editProfile = 'assets/icons/editProfile.png';
   static const String saveChanges = 'assets/icons/saveChanges.png';
+  static const String dataManage = 'assets/icons/dataManage.png';
+  static const String export = 'assets/icons/export.png';
+  static const String manage = 'assets/icons/manage.png';
+  static const String deleteIcon = 'assets/icons/deleteIcon.png';
+  static const String legal = 'assets/icons/legal.png';
+  static const String shield = 'assets/icons/shield.png';
+  static const String upProfile = 'assets/icons/upProfile.png';
+  // static const String uploadimg = 'assets/icons/uploadimg.png';
+  static const String uploadProImage = 'assets/icons/uploadProImage.png';
+  static const String threeDot = 'assets/icons/threedot.png';
+  static const String bin = 'assets/icons/bin.png';
   
 }

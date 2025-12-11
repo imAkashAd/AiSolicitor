@@ -6,7 +6,6 @@ class CustomButton extends StatelessWidget {
   final Color? imageColor;
   final BorderRadius? borderRadius;
   final Color? iconColor;
-  final IconData? icon;
   final Color? borderColor;
   final String text;
   final String? iconImagePath;
@@ -35,7 +34,6 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.fontSize,
     this.borderColor,
-    this.icon,
     this.width,
     this.height,
     this.iconSize,
